@@ -1,0 +1,32 @@
+import pandas as pd
+import io
+import requests
+from matplotlib import pyplot as plt
+
+url = "https://raw.githubusercontent.com/CoreyMSchafer/code_snippets/master/Python/Matplotlib/07-ScatterPlots/2019-05-31-data.csv"
+s= requests.get(url).content
+data = pd.read_csv(io.StringIO(s.decode('utf-8')))
+
+plt.style.use('seaborn')
+
+view_count = data['view_count']
+likes = data['likes']
+ratio = data['ratio']
+
+plt.scatter(view_count, likes, c=ratio, cmap='summer',
+            edgecolor='black', linewidth=1, alpha=0.75)
+
+cbar = plt.colorbar()
+cbar.set_label('Like/Dislike Ratio')
+
+
+plt.xscale('log')
+plt.yscale('log')
+
+plt.title('Trending YouTube Videos')
+plt.xlabel('View Count')
+plt.ylabel('Total Likes')
+
+plt.tight_layout()
+
+plt.show()
