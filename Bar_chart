@@ -3,11 +3,14 @@ import numpy as np
 import pandas as pd
 from collections import Counter
 from matplotlib import pyplot as plt
+import requests
+import io
 
 plt.style.use("fivethirtyeight")
 
-data = pd.read_csv('data.csv')
-ids = data['Responder_id']
+url = "https://raw.githubusercontent.com/CoreyMSchafer/code_snippets/master/Python/Matplotlib/02-BarCharts/data.csv"
+s = requests.get(url).content
+data = pd.read_csv(io.StringIO(s.decode('utf-8')))
 lang_responses = data['LanguagesWorkedWith']
 
 language_counter = Counter()
@@ -22,6 +25,9 @@ for item in language_counter.most_common(15):
     languages.append(item[0])
     popularity.append(item[1])
 
+print(languages)
+print(popularity)
+
 languages.reverse()
 popularity.reverse()
 
@@ -34,3 +40,6 @@ plt.xlabel("Number of People Who Use")
 plt.tight_layout()
 
 plt.show()
+
+
+
